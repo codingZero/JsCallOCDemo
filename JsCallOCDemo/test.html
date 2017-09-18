@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name='viewport' content='width=device-width,userScalable=no,initial-scale=1.0'>
+        <title>网页</title>
+        <style>
+            
+            input {
+                margin-top: 10px;
+                font-size: 20px;
+            }
+        
+            input:nth-of-type(-n+3) {
+                width: 100px;
+                margin-left: 10px;
+            }
+            
+            #box {
+                margin-top: 10px;
+                border: 1px solid #cccccc;
+                height: 23px;
+                padding-left: 5px;
+            }
+            
+            .photo {
+                width: 100%;
+                overflow: hidden;
+            }
+            
+            .photo img {
+                width: 100%;
+            }
+        </style>
+        <script type="text/javascript">
+            window.onload = function () {
+                var btn1 = document.getElementById('btn1')
+                var btn2 = document.getElementById('btn2')
+                var btn3 = document.getElementById('btn3')
+                var btn4 = document.getElementById('btn4')
+                var btn5 = document.getElementById('btn5')
+                var btn6 = document.getElementById('btn6')
+                var box = document.getElementById('box')
+                var photo = document.getElementById('photo')
+                btn1.onclick = function () {
+                    alert('这是alert');
+                }
+                
+                btn2.onclick = function () {
+                    var result = confirm('这是confirm')
+                    box.innerHTML = result
+                }
+                
+                btn3.onclick = function () {
+                    var result = prompt('你好', '请输入文字')
+                    box.innerHTML = result
+                }
+                
+                btn4.onclick = function () {
+                    window.webkit.messageHandlers.ocModel.postMessage({'type':'callSelector', 'selector':'openPhotoLibrary'});
+                }
+                
+                btn5.onclick = function () {
+                    var title = document.getElementById('title').value
+                    //使用注入对象给oc传递参数
+                    window.webkit.messageHandlers.ocModel.postMessage({'type':'sendData', 'data':title});
+                }
+                
+                btn6.onclick = function () {
+                    var iframe = document.createElement('iframe')
+                    iframe.src = 'js:getIOSFunForH5:{"name":"张三","age":25}'
+                    iframe.setAttribute('style','display:none')
+                    document.body.appendChild(iframe)
+                }
+            }
+        
+        
+            function setImage(path) {
+                var imgPath = path + "?_=" + new Date().getTime()
+                var img = document.createElement('img')
+                img.src = imgPath
+                photo.appendChild(img)
+            }
+        </script>
+    </head>
+    <body>
+        <input type="button" value="alert" id="btn1">
+        <input type="button" value="confirm" id="btn2">
+        <input type="button" value="prompt" id="btn3">
+        <br/>
+        <input type='button' value='open photoLibrary' id='btn4'>
+        <div id='box'></div>
+        页面标题：<input type="text" id="title">
+        <input type="button" value="设置" id="btn5"><br/>
+        <a href="https://www.baidu.com">百度首页</a>
+        <input type="button" value="调用原生" id="btn6">
+        <div class='photo' id='photo'></div>
+        
+    </body>
+</html>
